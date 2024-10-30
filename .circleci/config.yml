@@ -47,15 +47,21 @@ jobs:
       # Install dependencies
       - run:
           name: Install dependencies
-          command: npm install
+          command: |
+            cd frontend/tutoryou
+            npm install
       # Run ESLint
       - run:
           name: Run ESLint
-          command: npm run lint  # Ensure lint script exists in package.json
+          command: |
+            cd frontend/tutoryou
+            npm run lint  # Ensure lint script exists in package.json
       # Run Prettier
       - run:
           name: Check Prettier formatting
-          command: npm run prettier-check  # Ensure prettier-check script exists in package.json
+          command:  |
+            cd frontend/tutoryou
+            npm run prettier-check  # Ensure prettier-check script exists in package.json
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
