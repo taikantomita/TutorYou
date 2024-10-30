@@ -38,7 +38,7 @@ jobs:
           name: Run Flake8 on Python files
           command: |
             . venv/bin/activate
-            flake8 $(find . -name "*.py")  # Only check Python files
+            flake8 backend/  # Only check Python files
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
