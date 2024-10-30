@@ -25,7 +25,7 @@ jobs:
             fi
   lint-python:
     docker:
-      - image: circleci/python:3.9  # Use Python Docker image
+      - image: cimg/python:3.9  # Use Python Docker image
     steps:
       - checkout
       - run:
