@@ -39,6 +39,23 @@ jobs:
           command: |
             . venv/bin/activate
             flake8 backend/  # Only check Python files
+  lint-frontend:
+    docker:
+      - image: cimg/node:16  # Use a compatible Node.js version for Next.js
+    steps:
+      - checkout
+      # Install dependencies
+      - run:
+          name: Install dependencies
+          command: npm install
+      # Run ESLint
+      - run:
+          name: Run ESLint
+          command: npm run lint  # Ensure lint script exists in package.json
+      # Run Prettier
+      - run:
+          name: Check Prettier formatting
+          command: npm run prettier-check  # Ensure prettier-check script exists in package.json
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
@@ -48,3 +65,4 @@ workflows:
     jobs:
       - check-do-not-merge-label
       - lint-python
+      - lint-frontend
