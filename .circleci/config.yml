@@ -41,7 +41,7 @@ jobs:
             flake8 backend/  # Only check Python files
   lint-frontend:
     docker:
-      - image: cimg/node:18.17  # Use a compatible Node.js version for Next.js
+      - image: cimg/node:18.18  # Use a compatible Node.js version for Next.js
     steps:
       - checkout
       # Install dependencies
