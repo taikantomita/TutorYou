@@ -96,7 +96,7 @@ jobs:
             npm run prettier-check  # Ensure prettier-check script exists in package.json
   build-frontend:
     docker:
-      - image: cimg/node:16
+      - image: cimg/node:18.18
     steps:
       - checkout
       - run:
@@ -111,7 +111,7 @@ jobs:
             npm run build
   test-frontend:
     docker:
-      - image: cimg/node:16
+      - image: cimg/node:18.18
     steps:
       - checkout
       - run:
