@@ -132,12 +132,12 @@ workflows:
     jobs:
       - check-do-not-merge-label
       - lint-python
-      - backend-build
-      - backend-test:
+      - build-backend
+      - test-backend:
           requires:
-            - backend-build
+            - build-backend
       - lint-frontend
-      - frontend-build
-      - frontend-test:
+      - build-frontend
+      - test-frontend:
           requires:
-            - frontend-build
+            - build-frontend
