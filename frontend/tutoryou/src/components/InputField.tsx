@@ -1,14 +1,20 @@
-import React from "react";
+import React from 'react'
 
 interface InputFieldProps {
-  label: string;
-  type: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
+  label: string
+  type: string
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  placeholder?: string
 }
 
-const InputField: React.FC<InputFieldProps> = ({ label, type, value, onChange, placeholder }) => (
+const InputField: React.FC<InputFieldProps> = ({
+  label,
+  type,
+  value,
+  onChange,
+  placeholder,
+}) => (
   <div>
     <label className="block text-gray-700">{label}</label>
     <input
@@ -19,6 +25,6 @@ const InputField: React.FC<InputFieldProps> = ({ label, type, value, onChange, p
       className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
     />
   </div>
-);
+)
 
-export default InputField;
+export default InputField

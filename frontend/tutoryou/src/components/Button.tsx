@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react'
 
 interface ButtonProps {
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  children: React.ReactNode;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+  children: React.ReactNode
 }
 
 const Button: React.FC<ButtonProps> = ({ onClick, children }) => (
@@ -12,6 +12,6 @@ const Button: React.FC<ButtonProps> = ({ onClick, children }) => (
   >
     {children}
   </button>
-);
+)
 
-export default Button;
+export default Button

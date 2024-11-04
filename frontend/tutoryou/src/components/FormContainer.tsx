@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react'
 
 interface FormContainerProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const FormContainer: React.FC<FormContainerProps> = ({ children }) => (
@@ -10,6 +10,6 @@ const FormContainer: React.FC<FormContainerProps> = ({ children }) => (
       {children}
     </div>
   </div>
-);
+)
 
-export default FormContainer;
+export default FormContainer
