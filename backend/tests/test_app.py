@@ -1,3 +1,4 @@
+from app import app, get_db, Base  # Import directly from app
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -6,9 +7,13 @@ import sys
 import os
 
 # Add the src directory to Python path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
+sys.path.insert(
+    0,
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            "../src")))
 
-from app import app, get_db, Base  # Import directly from app
 
 # Set up a test database URL for testing
 DATABASE_URL = "sqlite:///./test_users.db"
