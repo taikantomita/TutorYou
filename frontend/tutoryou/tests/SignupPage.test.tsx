@@ -1,23 +1,29 @@
-import React from 'react';
+import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import SignupPage from '@/app/signup/page'
 import '@testing-library/jest-dom'
 
 describe('SignupPage', () => {
   it('renders correctly', () => {
-    render(<SignupPage />);
-    
+    render(<SignupPage />)
+
     // Check that the heading "Sign Up" is present
-    expect(screen.getByRole('heading', { name: /sign up/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /sign up/i }),
+    ).toBeInTheDocument()
 
     // Check that the button "Sign Up" is present
-    expect(screen.getByRole('button', { name: /sign up/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /sign up/i })).toBeInTheDocument()
 
     // Check that the username input is present
-    expect(screen.getByPlaceholderText(/enter your username/i)).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText(/enter your username/i),
+    ).toBeInTheDocument()
 
     // Check that the password input is present
-    expect(screen.getByPlaceholderText(/enter your password/i)).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText(/enter your password/i),
+    ).toBeInTheDocument()
   })
 
   it('shows an error when fields are empty and signup is attempted', async () => {
