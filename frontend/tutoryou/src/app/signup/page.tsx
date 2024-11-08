@@ -1,4 +1,5 @@
 'use client'
+import React from 'react';
 import { useState, FormEvent } from 'react'
 import { inputClass } from '@/styles/sharedClasses'
 import Link from 'next/link'
