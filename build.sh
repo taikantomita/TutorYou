@@ -16,7 +16,7 @@ pip install -r backend/requirements.txt
 
 # Run Flake8 on the backend directory
 echo "Running Flake8..."
-flake8 backend  # Adjust the path if needed
+flake8 backend/src  # Adjust the path if needed
 
 # Deactivate the virtual environment
 deactivate

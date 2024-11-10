@@ -39,6 +39,38 @@ jobs:
           command: |
             . venv/bin/activate
             flake8 backend/  # Only check Python files
+  build-backend:
+    docker:
+      - image: cimg/python:3.9
+    steps:
+      - checkout
+      - run:
+          name: Install backend dependencies
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install -r backend/requirements.txt
+      - run:
+          name: Build backend
+          command: |
+            . venv/bin/activate
+            python -m py_compile backend/src/app.py  # Command to check if backend builds
+  test-backend:
+    docker:
+      - image: cimg/python:3.9
+    steps:
+      - checkout
+      - run:
+          name: Install backend dependencies
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install -r backend/requirements.txt
+      - run:
+          name: Run backend tests
+          command: |
+            . venv/bin/activate
+            pytest backend/tests --maxfail=1 --disable-warnings
   lint-frontend:
     docker:
       - image: cimg/node:18.18  # Use a compatible Node.js version for Next.js
@@ -62,7 +94,36 @@ jobs:
           command:  |
             cd frontend/tutoryou
             npm run prettier-check  # Ensure prettier-check script exists in package.json
-
+  build-frontend:
+    docker:
+      - image: cimg/node:18.18
+    steps:
+      - checkout
+      - run:
+          name: Install frontend dependencies
+          command: |
+            cd frontend/tutoryou
+            npm install
+      - run:
+          name: Build frontend
+          command: |
+            cd frontend/tutoryou
+            npm run build
+  test-frontend:
+    docker:
+      - image: cimg/node:18.18
+    steps:
+      - checkout
+      - run:
+          name: Install frontend dependencies
+          command: |
+            cd frontend/tutoryou
+            npm install
+      - run:
+          name: Run frontend tests
+          command: |
+            cd frontend/tutoryou
+            npm test -- --maxWorkers=4
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
 workflows:
@@ -71,4 +132,12 @@ workflows:
     jobs:
       - check-do-not-merge-label
       - lint-python
+      - build-backend
+      - test-backend:
+          requires:
+            - build-backend
       - lint-frontend
+      - build-frontend
+      - test-frontend:
+          requires:
+            - build-frontend
