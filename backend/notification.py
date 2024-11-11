@@ -1,5 +1,6 @@
 from notifiers import get_notifier
 
+
 class Notification:
     C_TUTORYOU_EMAIL = 'tutoryou.notification@gmail.com'
     C_TUTORYOU_PASSWORD = 'tutoryoupassword123!'
