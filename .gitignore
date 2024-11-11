@@ -3,3 +3,6 @@ backend/src/__pycache__/
 backend/tests/__pycache__/
 *.pyc
 *.pyo
+
+# user.db should be generated fresh when run locally, don't track in branch
+users.db
