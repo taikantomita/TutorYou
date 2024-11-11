@@ -37,7 +37,7 @@ class Notification:
         email.notify(
             to=f"{tutor_email}, {user_email}",
             subject='Session Cancelation',
-            message=f'A session has been cancelled.',
+            message='A session has been cancelled.',
             username=cls.C_TUTORYOU_EMAIL,
             password=cls.C_TUTORYOU_PASSWORD,
             host='smtp.gmail.com',
