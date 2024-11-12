@@ -1,45 +1,48 @@
-from notifiers import get_notifier
-
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 class Notification:
     C_TUTORYOU_EMAIL = 'tutoryou.notification@gmail.com'
-    C_TUTORYOU_PASSWORD = 'tutoryoupassword123!'
+    C_TUTORYOU_PASSWORD = 'jmdd gaib wrgk qtqw'
+    C_SMTP = 'smtp.gmail.com'
+    C_PORT = 587
+
+    session_date = None
+
+
+    message_data = {
+        'create': {
+            'subject': 'New Session Scheduled',
+            'body': f'Session scheduled for {session_date}',
+        },
+        'modify': {
+            'subject': 'Update To Session',
+            'body': f'Session has been moved to {session_date}'
+        },
+        'cancel': {
+            'subject': 'Session Canceled',
+            'body': f'Session for {session_date} has been cancelled'
+        }
+    }
+
 
     @classmethod
-    def session_create(cls, tutor_email, user_email, date):
-        email = get_notifier('email')
-        email.notify(
-            to=f"{tutor_email}, {user_email}",
-            subject='Session Scheduled',
-            message=f'A session has been scheduled on {date}.',
-            username=cls.C_TUTORYOU_EMAIL,
-            password=cls.C_TUTORYOU_PASSWORD,
-            host='smtp.gmail.com',
-            port=587
-        )
+    def send_message(cls, session_emails, session_date, modification_type):
+        msg = MIMEMultipart()
+        msg['From'] = cls.C_TUTORYOU_EMAIL
+        msg['To'] = session_emails
+        msg['Subject'] = cls.message_data[modification_type]['subject']
+        body = cls.message_data[modification_type]['body']
 
-    @classmethod
-    def session_modify(cls, tutor_email, user_email, date):
-        email = get_notifier('email')
-        email.notify(
-            to=f"{tutor_email}, {user_email}",
-            subject='Session Modification',
-            message=f'A session has been changed to {date}.',
-            username=cls.C_TUTORYOU_EMAIL,
-            password=cls.C_TUTORYOU_PASSWORD,
-            host='smtp.gmail.com',
-            port=587
-        )
+        msg.attach(MIMEText(body, 'plain'))
 
-    @classmethod
-    def session_cancel(cls, tutor_email, user_email, date):
-        email = get_notifier('email')
-        email.notify(
-            to=f"{tutor_email}, {user_email}",
-            subject='Session Cancelation',
-            message='A session has been cancelled.',
-            username=cls.C_TUTORYOU_EMAIL,
-            password=cls.C_TUTORYOU_PASSWORD,
-            host='smtp.gmail.com',
-            port=587
-        )
+        try:
+            with smtplib.SMTP(cls.C_SMTP, cls.C_PORT) as server:
+                server.ehlo()
+                server.starttls()  
+                server.ehlo()
+                server.login(cls.C_TUTORYOU_EMAIL, cls.C_TUTORYOU_PASSWORD)
+                server.send_message(msg)
+        except Exception as e:
+            print(f"Error: {e}")
