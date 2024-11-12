@@ -53,7 +53,7 @@ pip install -r requirements.txt
 
 ```{bash}
 # Navigate to the Frontend Directory
-cd ../frontend
+cd ../frontend/tutoryou
 
 # Install Frontend Dependencies
 npm install
