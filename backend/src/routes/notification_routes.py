@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify
 from notification import Notification
 from session import Session
 
@@ -8,7 +8,10 @@ app = Flask(__name__)
 def process_notification(session, action):
     session = Session.get_session(session)
     Notification.send_message(session_emails=list(
-        session.user_email, session.tutor_email), session_date=session.date, modification_type=action)
+        session.user_email, 
+        session.tutor_email), 
+        session_date=session.date, 
+        modification_type=action)
     return jsonify({"status": f"Notification {action} sent successfully"})
 
 
