@@ -3,7 +3,6 @@ class Sesssion:
     need to return json object
     '''
 
-
     @classmethod
     def get_sessions(user_id):
         '''

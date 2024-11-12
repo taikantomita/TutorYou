@@ -2,6 +2,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+
 class Notification:
     C_TUTORYOU_EMAIL = 'tutoryou.notification@gmail.com'
     C_TUTORYOU_PASSWORD = 'jmdd gaib wrgk qtqw'
@@ -9,7 +10,6 @@ class Notification:
     C_PORT = 587
 
     session_date = None
-
 
     message_data = {
         'create': {
@@ -26,7 +26,6 @@ class Notification:
         }
     }
 
-
     @classmethod
     def send_message(cls, session_emails, session_date, modification_type):
         msg = MIMEMultipart()
@@ -40,7 +39,7 @@ class Notification:
         try:
             with smtplib.SMTP(cls.C_SMTP, cls.C_PORT) as server:
                 server.ehlo()
-                server.starttls()  
+                server.starttls()
                 server.ehlo()
                 server.login(cls.C_TUTORYOU_EMAIL, cls.C_TUTORYOU_PASSWORD)
                 server.send_message(msg)
