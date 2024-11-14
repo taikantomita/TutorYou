@@ -15,7 +15,7 @@ git clone https://github.com/taikantomita/TutorYou.git
 cd TutorYou
 ```
 
-#### Setup Backend
+#### Setup Backend On MacOS
 
 ```{bash}
 # Navigate to the Backend Directory
@@ -32,11 +32,28 @@ pip install -r requirements.txt
 ./venv/bin/python -m uvicorn src.app:app --reload
 ```
 
+#### Setup Backend On Windows
+
+```{bash}
+# Navigate to the Backend Directory
+cd backend 
+
+# Create and Activate a Virtual Environment
+python -m venv venv
+.\venv\Scripts\activate
+
+# Install Backend Dependencies
+pip install -r requirements.txt
+
+# Start the Backend Server
+.\venv\Scripts\python -m uvicorn src.app:app --reload
+```
+
 #### Setup Frontend
 
 ```{bash}
 # Navigate to the Frontend Directory
-cd ../frontend
+cd ../frontend/tutoryou
 
 # Install Frontend Dependencies
 npm install
