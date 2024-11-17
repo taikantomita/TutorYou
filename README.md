@@ -69,3 +69,8 @@ Frontend: Open http://localhost:3000 in your browser
 Backend API Documentation: Access the interactive API docs at http://localhost:8000/docs
 
 #### Linting
+
+## Dev Notes
+
+#### Protected Pages
+Protected pages are only accessible to authenticated users. Specify paths to protected pages in https://github.com/taikantomita/TutorYou/blob/d70d4ff4606af25e3b9c304ed26b7138caddcb6a/frontend/tutoryou/src/middleware.ts#L25
