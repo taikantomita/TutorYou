@@ -53,6 +53,7 @@ def setup_database():
 
 # 1. Test Successful User Registration
 
+
 def test_register_user():
     response = client.post(
         "/register",
@@ -101,6 +102,7 @@ def test_register_blank_fields(username, password):
             "password": password})
     # FastAPI automatically handles validation errors for blank fields
     assert response.status_code == 422
+
 
 def test_login_user():
     # First register the user
