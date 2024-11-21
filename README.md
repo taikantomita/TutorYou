@@ -70,6 +70,30 @@ Backend API Documentation: Access the interactive API docs at http://localhost:8
 
 #### Linting
 
+```{bash}
+cd backend
+autopep8 src --in-place --recursive --aggressive
+autopep8 tests --in-place --recursive --aggressive
+```
+
+```{bash}
+cd frontend/tutoryou
+npm run prettier-write
+npm run prettier-check
+```
+
+#### Running Tests
+
+```{bash}
+cd backend
+pytest
+```
+
+```{bash}
+cd frontend/tutoryou
+npm run test
+```
+
 ## Dev Notes
 
 #### Protected Pages
