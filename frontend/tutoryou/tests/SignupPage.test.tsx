@@ -34,7 +34,7 @@ describe('SignupPage', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText(/username and password are required/i),
+        screen.getByText(/Username, password, and role are required./i),
       ).toBeInTheDocument()
     })
   })
