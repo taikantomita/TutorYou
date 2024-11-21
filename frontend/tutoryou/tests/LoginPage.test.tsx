@@ -18,6 +18,19 @@ jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
 }))
 
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () =>
+      Promise.resolve({
+        user: {
+          id: 1,
+          username: 'testuser',
+          role: 'Tutor',
+        },
+      }),
+  }),
+) as jest.Mock
+
 describe('LoginPage', () => {
   it('renders correctly', () => {
     render(<LoginPage />)
@@ -63,7 +76,7 @@ describe('LoginPage', () => {
     // Wait for redirection logic
     await waitFor(() => {
       expect(pushMock).toHaveBeenCalledTimes(1)
-      expect(pushMock).toHaveBeenCalledWith('/user-landing')
+      expect(pushMock).toHaveBeenCalledWith('/tutors/dashboard')
     })
   })
 

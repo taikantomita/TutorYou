@@ -1,6 +1,5 @@
 'use client'
-import React from 'react'
-import { useState, FormEvent } from 'react'
+import React, { useState, FormEvent } from 'react'
 import { inputClass } from '@/styles/sharedClasses'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -8,6 +7,7 @@ import { useRouter } from 'next/navigation'
 export default function SignupPage() {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [role, setRole] = useState<string>('Learner') // Default role
   const [error, setError] = useState<string | null>(null) // State for error messages
   const [success, setSuccess] = useState<boolean>(false) // State for signup success
   const router = useRouter()
@@ -16,8 +16,8 @@ export default function SignupPage() {
     e.preventDefault()
 
     // Check for blank fields
-    if (!username || !password) {
-      setError('Username and password are required.')
+    if (!username || !password || !role) {
+      setError('Username, password, and role are required.')
       return
     }
 
@@ -27,7 +27,7 @@ export default function SignupPage() {
     const res = await fetch('http://localhost:8000/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ username, password, role }),
     })
 
     if (res.ok) {
@@ -83,6 +83,19 @@ export default function SignupPage() {
               placeholder="Enter your password"
               className={inputClass}
             />
+          </div>
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300">
+              Role
+            </label>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className={inputClass}
+            >
+              <option value="Learner">Learner</option>
+              <option value="Tutor">Tutor</option>
+            </select>
           </div>
           <button
             type="submit"

@@ -59,7 +59,8 @@ def test_register_user():
         "/register",
         json={
             "username": "testuser",
-            "password": "testpassword"})
+            "password": "testpassword",
+            "role": "Tutor"})
     assert response.status_code == 201
     assert response.json() == {"message": "User created successfully"}
 
@@ -72,14 +73,16 @@ def test_register_duplicate_user():
         "/register",
         json={
             "username": "duplicateuser",
-            "password": "password1"})
+            "password": "password1",
+            "role": "Tutor"})
 
     # Attempt to register with the same username
     response = client.post(
         "/register",
         json={
             "username": "duplicateuser",
-            "password": "password2"})
+            "password": "password2",
+            "role": "Tutor"})
     assert response.status_code == 409
     assert response.json() == {"detail": "Username already taken"}
 
@@ -100,8 +103,6 @@ def test_register_blank_fields(username, password):
     # FastAPI automatically handles validation errors for blank fields
     assert response.status_code == 422
 
-# 4. Test Successful Login
-
 
 def test_login_user():
     # First register the user
@@ -109,19 +110,29 @@ def test_login_user():
         "/register",
         json={
             "username": "loginuser",
-            "password": "loginpassword"})
+            "password": "loginpassword",
+            "role": "Tutor"
+        }
+    )
 
     # Attempt to log in with correct credentials
     response = client.post(
         "/login",
         json={
             "username": "loginuser",
-            "password": "loginpassword"})
+            "password": "loginpassword"
+        }
+    )
     assert response.status_code == 200
     assert response.json() == {
         "message": "Login successful",
-        "user": {"id": response.json()["user"]["id"], "username": "loginuser"}
+        "user": {
+            "id": response.json()["user"]["id"],
+            "username": "loginuser",
+            "role": "Tutor"  # Include role in expected response
+        }
     }
+
 
 # 5. Test Login with Invalid Password
 

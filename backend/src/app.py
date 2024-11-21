@@ -20,6 +20,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
     password_hash = Column(String)
+    role = Column(String)  # Add role column
 
 
 # Create tables
@@ -31,10 +32,15 @@ Base.metadata.create_all(bind=engine)
 class UserCreate(BaseModel):
     username: constr(min_length=1)  # Enforce non-empty username
     password: constr(min_length=1)  # Enforce non-empty password
+    role: constr(min_length=1)  # Enforce non-empty role
+
+
+class UserLogin(BaseModel):
+    username: constr(min_length=1)  # Enforce non-empty username
+    password: constr(min_length=1)  # Enforce non-empty password
+
 
 # Dependency to get the database session
-
-
 def get_db():
     db = SessionLocal()
     try:
@@ -60,31 +66,49 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     # Check if the username already exists
     db_user = db.query(User).filter(User.username == user.username).first()
     if db_user:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT,
-                            detail="Username already taken")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Username already taken"
+        )
+
+    # Validate role
+    if user.role not in ["Tutor", "Learner"]:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid role. Role must be 'Tutor' or 'Learner'."
+        )
 
     # Create the new user with a hashed password
     password_hash = bcrypt.hashpw(
         user.password.encode('utf-8'), bcrypt.gensalt())
-    db_user = User(username=user.username,
-                   password_hash=password_hash.decode('utf-8'))
+    db_user = User(
+        username=user.username,
+        password_hash=password_hash.decode('utf-8'),
+        role=user.role,
+    )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return {"message": "User created successfully"}
 
+
 # Login route
-
-
 @app.post("/login", status_code=status.HTTP_200_OK)
-def login(user: UserCreate, db: Session = Depends(get_db)):
+def login(user: UserLogin, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.username == user.username).first()
     if not db_user or not bcrypt.checkpw(user.password.encode(
             'utf-8'), db_user.password_hash.encode('utf-8')):
         # Use a generic error message to avoid giving clues to attackers
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid credentials")
+            detail="Invalid credentials"
+        )
 
-    return {"message": "Login successful", "user": {
-        "id": db_user.id, "username": db_user.username}}
+    return {
+        "message": "Login successful",
+        "user": {
+            "id": db_user.id,
+            "username": db_user.username,
+            "role": db_user.role,
+        }
+    }

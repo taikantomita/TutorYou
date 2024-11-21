@@ -1,9 +1,8 @@
 'use client'
-import React from 'react'
+import React, { useState, FormEvent } from 'react'
 import { signIn } from 'next-auth/react'
-import { useState, FormEvent } from 'react'
-import { inputClass } from '@/styles/sharedClasses'
 import { useRouter } from 'next/navigation'
+import { inputClass } from '@/styles/sharedClasses'
 
 export default function LoginPage() {
   const [username, setUsername] = useState<string>('')
@@ -23,6 +22,7 @@ export default function LoginPage() {
     // Clear any previous error
     setError(null)
 
+    // Perform login using NextAuth
     const result = await signIn('credentials', {
       redirect: false,
       username,
@@ -30,7 +30,17 @@ export default function LoginPage() {
     })
 
     if (result?.ok) {
-      router.push('/user-landing')
+      // Fetch session data after successful login
+      const res = await fetch('/api/auth/session')
+      const session = await res.json()
+
+      if (session?.user?.role === 'Tutor') {
+        router.push('/tutors/dashboard') // Redirect tutors to their dashboard
+      } else if (session?.user?.role === 'Learner') {
+        router.push('/students/dashboard') // Redirect learners to their dashboard
+      } else {
+        router.push('/user-landing') // Fallback route if role is undefined
+      }
     } else {
       // Set a user-friendly error message
       setError(

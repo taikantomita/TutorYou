@@ -15,7 +15,7 @@ describe('UserLandingPage', () => {
 
     // Check for welcome message
     expect(
-      screen.getByText(/welcome to the test page - you are logged in!/i),
+      screen.getByText(/This page should only be visible when logged in./i),
     ).toBeInTheDocument()
 
     // Check for logout button
