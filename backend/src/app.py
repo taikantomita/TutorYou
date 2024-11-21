@@ -96,7 +96,8 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 @app.post("/login", status_code=status.HTTP_200_OK)
 def login(user: UserLogin, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.username == user.username).first()
-    if not db_user or not bcrypt.checkpw(user.password.encode('utf-8'), db_user.password_hash.encode('utf-8')):
+    if not db_user or not bcrypt.checkpw(user.password.encode(
+            'utf-8'), db_user.password_hash.encode('utf-8')):
         # Use a generic error message to avoid giving clues to attackers
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
