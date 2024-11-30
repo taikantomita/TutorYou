@@ -1,53 +1,63 @@
-'use client'
-import React, { useState, FormEvent } from 'react'
-import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import { inputClass } from '@/styles/sharedClasses'
+'use client';
+import React, { useState, FormEvent } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { inputClass } from '@/styles/sharedClasses';
 
 export default function LoginPage() {
-  const [username, setUsername] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [error, setError] = useState<string | null>(null) // State for error message
-  const router = useRouter()
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null); // State for error message
+  const router = useRouter();
 
   const handleLogin = async (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     // Check for blank fields
     if (!username || !password) {
-      setError('Username and password are required.')
-      return
+      setError('Username and password are required.');
+      return;
     }
 
     // Clear any previous error
-    setError(null)
+    setError(null);
 
-    // Perform login using NextAuth
-    const result = await signIn('credentials', {
-      redirect: false,
-      username,
-      password,
-    })
+    try {
+      // Perform login using NextAuth
+      const result = await signIn('credentials', {
+        redirect: false,
+        username,
+        password,
+      });   
 
-    if (result?.ok) {
-      // Fetch session data after successful login
-      const res = await fetch('/api/auth/session')
-      const session = await res.json()
 
-      if (session?.user?.role === 'Tutor') {
-        router.push('/tutors/dashboard') // Redirect tutors to their dashboard
-      } else if (session?.user?.role === 'Learner') {
-        router.push('/students/dashboard') // Redirect learners to their dashboard
+      
+
+      if (result?.ok) {
+        
+        // Fetch session data after successful login
+        const res = await fetch('/api/auth/session');
+        const session = await res.json();
+        
+
+        if (session?.user?.role === 'Tutor') {
+          router.push('/tutor-only-pages/dashboard'); // Redirect tutors to their dashboard
+        } else if (session?.user?.role === 'Learner') {
+          router.push('/student-only-pages/dashboard'); // Redirect learners to their dashboard
+        } else {
+          router.push('/user-landing'); // Fallback route if role is undefined
+        }
       } else {
-        router.push('/user-landing') // Fallback route if role is undefined
+        // Set a user-friendly error message
+        setError(result?.error || 'Invalid credentials.');
       }
-    } else {
-      // Set a user-friendly error message
-      setError(
-        'Login failed. Please check your username and password and try again.',
-      )
+    
+    } catch (e) {
+      console.error(e);
+      setError('An unexpected error occurred. Please try again later.');
+      
     }
-  }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900">
@@ -56,7 +66,6 @@ export default function LoginPage() {
           Login
         </h2>
 
-        {/* Display error message if login fails */}
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
         <form onSubmit={handleLogin} className="space-y-4">
@@ -99,5 +108,5 @@ export default function LoginPage() {
         </form>
       </div>
     </div>
-  )
+  );
 }
