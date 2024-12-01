@@ -1,26 +1,26 @@
-'use client';
-import React, { useState, FormEvent } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { inputClass } from '@/styles/sharedClasses';
+'use client'
+import React, { useState, FormEvent } from 'react'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { inputClass } from '@/styles/sharedClasses'
 
 export default function LoginPage() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null); // State for error message
-  const router = useRouter();
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null) // State for error message
+  const router = useRouter()
 
   const handleLogin = async (e: FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
     // Check for blank fields
     if (!username || !password) {
-      setError('Username and password are required.');
-      return;
+      setError('Username and password are required.')
+      return
     }
 
     // Clear any previous error
-    setError(null);
+    setError(null)
 
     try {
       // Perform login using NextAuth
@@ -28,36 +28,31 @@ export default function LoginPage() {
         redirect: false,
         username,
         password,
-      });   
-
-
-      
+      })
 
       if (result?.ok) {
-        
         // Fetch session data after successful login
-        const res = await fetch('/api/auth/session');
-        const session = await res.json();
-        
+        const res = await fetch('/api/auth/session')
+        const session = await res.json()
 
         if (session?.user?.role === 'Tutor') {
-          router.push('/tutor-only-pages/dashboard'); // Redirect tutors to their dashboard
+          router.push('/tutor-only-pages/dashboard') // Redirect tutors to their dashboard
         } else if (session?.user?.role === 'Learner') {
-          router.push('/student-only-pages/dashboard'); // Redirect learners to their dashboard
+          router.push('/student-only-pages/dashboard') // Redirect learners to their dashboard
         } else {
-          router.push('/user-landing'); // Fallback route if role is undefined
+          router.push('/user-landing') // Fallback route if role is undefined
         }
       } else {
         // Set a user-friendly error message
-        setError(result?.error || 'Invalid credentials.');
+        setError(result?.error || 'Invalid credentials.')
       }
-    
     } catch (e) {
-      console.error(e);
-      setError('Login failed. Please check your username and password and try again.');
-      
+      console.error(e)
+      setError(
+        'Login failed. Please check your username and password and try again.',
+      )
     }
-  };
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900">
@@ -108,5 +103,5 @@ export default function LoginPage() {
         </form>
       </div>
     </div>
-  );
+  )
 }
