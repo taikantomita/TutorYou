@@ -103,15 +103,17 @@ def test_register_duplicate_user():
     ("username", "password", "Tutor", "Question?", ""),
     ("", "", "", "", "")
 ])
-def test_register_blank_fields(username, password, question, answer):
+def test_register_blank_fields(username, password, role, question, answer):
     response = client.post(
         "/register",
         json={
             "username": username,
             "password": password,
+            "role": role,
             "security_question": question,
-            "security_answer": answer})
-    # FastAPI automatically handles validation errors for blank fields
+            "security_answer": answer
+        }
+    )
     assert response.status_code == 422
 
 

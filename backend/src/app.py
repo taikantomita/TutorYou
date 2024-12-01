@@ -117,7 +117,7 @@ def reset_password(request: ResetPassword, db: Session = Depends(get_db)):
         )
 
     # Verify the security answer
-    if not bcrypt.checkpw(request.security_answer.encode('utf-8'), 
+    if not bcrypt.checkpw(request.security_answer.encode('utf-8'),
                           db_user.security_answer_hash.encode('utf-8')):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -125,7 +125,7 @@ def reset_password(request: ResetPassword, db: Session = Depends(get_db)):
         )
 
     # Hash and update the new password
-    new_password_hash = bcrypt.hashpw(request.new_password.encode('utf-8'), 
+    new_password_hash = bcrypt.hashpw(request.new_password.encode('utf-8'),
                                       bcrypt.gensalt())
     db_user.password_hash = new_password_hash.decode('utf-8')
     db.commit()
@@ -143,7 +143,6 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid credentials"
         )
-
 
     return {
         "message": "Login successful",
