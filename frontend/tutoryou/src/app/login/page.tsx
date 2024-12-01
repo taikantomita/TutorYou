@@ -35,7 +35,7 @@ export default function LoginPage() {
       const session = await res.json()
 
       if (session?.user?.role === 'Tutor') {
-        router.push('/tutor-only-pages/dashboard') // Redirect tutors to their dashboard
+        router.push('/tutors/dashboard') // Redirect tutors to their dashboard
       } else if (session?.user?.role === 'Learner') {
         router.push('/student-only-pages/dashboard') // Redirect learners to their dashboard
       } else {
