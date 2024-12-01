@@ -49,7 +49,7 @@ python -m venv venv
 pip install -r requirements.txt
 
 # Start the Backend Server
-.\venv\Scripts\python -m uvicorn src.app:app --reload
+uvicorn src.app:app --reload
 ```
 
 #### Setup Frontend
