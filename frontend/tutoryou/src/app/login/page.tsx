@@ -22,32 +22,27 @@ export default function LoginPage() {
     // Clear any previous error
     setError(null)
 
-    try {
-      // Perform login using NextAuth
-      const result = await signIn('credentials', {
-        redirect: false,
-        username,
-        password,
-      })
+    // Perform login using NextAuth
+    const result = await signIn('credentials', {
+      redirect: false,
+      username,
+      password,
+    })
 
-      if (result?.ok) {
-        // Fetch session data after successful login
-        const res = await fetch('/api/auth/session')
-        const session = await res.json()
+    if (result?.ok) {
+      // Fetch session data after successful login
+      const res = await fetch('/api/auth/session')
+      const session = await res.json()
 
-        if (session?.user?.role === 'Tutor') {
-          router.push('/tutor-only-pages/dashboard') // Redirect tutors to their dashboard
-        } else if (session?.user?.role === 'Learner') {
-          router.push('/student-only-pages/dashboard') // Redirect learners to their dashboard
-        } else {
-          router.push('/user-landing') // Fallback route if role is undefined
-        }
+      if (session?.user?.role === 'Tutor') {
+        router.push('/tutor-only-pages/dashboard') // Redirect tutors to their dashboard
+      } else if (session?.user?.role === 'Learner') {
+        router.push('/student-only-pages/dashboard') // Redirect learners to their dashboard
       } else {
-        // Set a user-friendly error message
-        setError(result?.error || 'Invalid credentials.')
+        router.push('/user-landing') // Fallback route if role is undefined
       }
-    } catch (e) {
-      console.error(e)
+    } else {
+      // Set a user-friendly error message
       setError(
         'Login failed. Please check your username and password and try again.',
       )
