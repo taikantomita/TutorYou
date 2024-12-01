@@ -5,7 +5,9 @@ from sqlalchemy.orm import sessionmaker, Session, declarative_base
 from fastapi.middleware.cors import CORSMiddleware
 import bcrypt
 
+
 app = FastAPI()
+
 DATABASE_URL = "sqlite:///./users.db"
 
 # Set up the database
@@ -62,9 +64,8 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
 )
 
+
 # Register route
-
-
 @app.post("/register", status_code=status.HTTP_201_CREATED)
 def register(user: UserCreate, db: Session = Depends(get_db)):
     # Check if the username already exists
@@ -99,6 +100,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(db_user)
     return {"message": "User created successfully"}
 
+
 class ResetPassword(BaseModel):
     username: constr(min_length=1)
     security_answer: constr(min_length=1)
@@ -115,17 +117,20 @@ def reset_password(request: ResetPassword, db: Session = Depends(get_db)):
         )
 
     # Verify the security answer
-    if not bcrypt.checkpw(request.security_answer.encode('utf-8'), db_user.security_answer_hash.encode('utf-8')):
+    if not bcrypt.checkpw(request.security_answer.encode('utf-8'), 
+                          db_user.security_answer_hash.encode('utf-8')):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid security answer"
         )
 
     # Hash and update the new password
-    new_password_hash = bcrypt.hashpw(request.new_password.encode('utf-8'), bcrypt.gensalt())
+    new_password_hash = bcrypt.hashpw(request.new_password.encode('utf-8'), 
+                                      bcrypt.gensalt())
     db_user.password_hash = new_password_hash.decode('utf-8')
     db.commit()
     return {"message": "Password reset successfully"}
+
 
 # Login route
 @app.post("/login", status_code=status.HTTP_200_OK)
@@ -138,6 +143,7 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid credentials"
         )
+
 
     return {
         "message": "Login successful",
