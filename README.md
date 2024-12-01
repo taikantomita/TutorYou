@@ -7,10 +7,13 @@ Team Members: Reggie Segovia, Taikan Tomita, Tyler Shook, Yash Patel
 ## Local Dev Env Setup
 
 1. Clone repo
+
 ```
 git clone https://github.com/taikantomita/TutorYou.git
 ```
+
 2. Navigate to the Project Directory
+
 ```
 cd TutorYou
 ```
@@ -19,7 +22,7 @@ cd TutorYou
 
 ```{bash}
 # Navigate to the Backend Directory
-cd backend 
+cd backend
 
 # Create and Activate a Virtual Environment
 python3 -m venv venv
@@ -36,7 +39,7 @@ pip install -r requirements.txt
 
 ```{bash}
 # Navigate to the Backend Directory
-cd backend 
+cd backend
 
 # Create and Activate a Virtual Environment
 python -m venv venv
@@ -46,7 +49,7 @@ python -m venv venv
 pip install -r requirements.txt
 
 # Start the Backend Server
-.\venv\Scripts\python -m uvicorn src.app:app --reload
+uvicorn src.app:app --reload
 ```
 
 #### Setup Frontend
@@ -97,4 +100,5 @@ npm run test
 ## Dev Notes
 
 #### Protected Pages
+
 Protected pages are only accessible to authenticated users. Specify paths to protected pages in https://github.com/taikantomita/TutorYou/blob/d70d4ff4606af25e3b9c304ed26b7138caddcb6a/frontend/tutoryou/src/middleware.ts#L25

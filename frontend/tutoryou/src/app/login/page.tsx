@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation'
 import { inputClass } from '@/styles/sharedClasses'
 
 export default function LoginPage() {
-  const [username, setUsername] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null) // State for error message
   const router = useRouter()
 
@@ -37,7 +37,7 @@ export default function LoginPage() {
       if (session?.user?.role === 'Tutor') {
         router.push('/tutors/dashboard') // Redirect tutors to their dashboard
       } else if (session?.user?.role === 'Learner') {
-        router.push('/students/dashboard') // Redirect learners to their dashboard
+        router.push('/student-only-pages/dashboard') // Redirect learners to their dashboard
       } else {
         router.push('/user-landing') // Fallback route if role is undefined
       }
@@ -56,7 +56,6 @@ export default function LoginPage() {
           Login
         </h2>
 
-        {/* Display error message if login fails */}
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
         <form onSubmit={handleLogin} className="space-y-4">
