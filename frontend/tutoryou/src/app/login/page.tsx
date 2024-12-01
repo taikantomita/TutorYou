@@ -54,7 +54,7 @@ export default function LoginPage() {
     
     } catch (e) {
       console.error(e);
-      setError('An unexpected error occurred. Please try again later.');
+      setError('Login failed. Please check your username and password and try again.');
       
     }
   };
