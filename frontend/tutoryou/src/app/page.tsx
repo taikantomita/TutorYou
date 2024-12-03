@@ -2,11 +2,12 @@
 
 import React from 'react'
 
+// Functional component for the home page
 export default function HomePage() {
   return (
     <div
       style={{
-        minHeight: '100vh',
+        minHeight: '100vh', 
         backgroundColor: '#f3f4f6',
         display: 'flex',
         justifyContent: 'center',

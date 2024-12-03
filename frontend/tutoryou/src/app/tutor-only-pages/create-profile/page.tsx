@@ -4,8 +4,9 @@ import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 
+// The functional component to create a tutor profile
 export default function CreateProfile() {
-  const [name, setName] = useState('')
+  const [name, setName] = useState('') // States for form input
   const [email, setEmail] = useState('')
   const [school, setSchool] = useState('')
   const [subjects, setSubjects] = useState<string[]>([])
@@ -13,6 +14,7 @@ export default function CreateProfile() {
   const [preview, setPreview] = useState<string | null>(null)
   const router = useRouter()
 
+  // Handles the submission form
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const profile = {
@@ -29,6 +31,7 @@ export default function CreateProfile() {
     router.push('/tutor-only-pages/dashboard')
   }
 
+  // Handles the profile picture 
   const handleProfilePictureChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -39,6 +42,7 @@ export default function CreateProfile() {
     }
   }
 
+  // Handles the subject selection
   const handleSubjectChange = (subject: string, isChecked: boolean) => {
     if (isChecked) {
       setSubjects((prev) => [...prev, subject])
