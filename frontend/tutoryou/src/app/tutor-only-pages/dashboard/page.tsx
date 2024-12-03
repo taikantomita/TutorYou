@@ -13,7 +13,7 @@ interface Tutor {
   availableDates: { date: string; times: string[] }[]
 }
 
-// Handler for appointment 
+// Handler for appointment
 interface Appointment {
   tutor?: Tutor
   studentName: string
@@ -31,7 +31,7 @@ interface Profile {
   profilePicture: string | null
 }
 
-// 
+//
 export default function TutorDashboard() {
   const router = useRouter()
   const [selectedDate, setSelectedDate] = useState<string>('')

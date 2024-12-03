@@ -31,7 +31,7 @@ export default function CreateProfile() {
     router.push('/tutor-only-pages/dashboard')
   }
 
-  // Handles the profile picture 
+  // Handles the profile picture
   const handleProfilePictureChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {

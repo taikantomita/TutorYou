@@ -1,6 +1,6 @@
 import React from 'react'
 
-// Defines the props 
+// Defines the props
 interface InputFieldProps {
   label: string // Text label for input field
   type: string // Type of input
