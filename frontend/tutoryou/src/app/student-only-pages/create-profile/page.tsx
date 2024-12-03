@@ -13,12 +13,16 @@ export default function CreateProfile() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Profile Created:', {
+    const profile = {
       name,
       email,
-      subjects: subjects.join(', '),
-      profilePicture,
-    })
+      subjects,
+      profilePicture: profilePicture
+        ? URL.createObjectURL(profilePicture)
+        : null,
+    }
+    localStorage.setItem('profile', JSON.stringify(profile))
+    console.log('Profile Created:', profile)
     router.push('/student-only-pages/dashboard')
   }
 
