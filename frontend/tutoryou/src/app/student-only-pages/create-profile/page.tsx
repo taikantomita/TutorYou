@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
+import Image from 'next/image'
 
 export default function CreateProfile() {
   const [name, setName] = useState('')
@@ -59,9 +60,11 @@ export default function CreateProfile() {
           </label>
           {preview && (
             <div className="mb-4">
-              <img
+              <Image
                 src={preview}
                 alt="Profile Preview"
+                width={96}
+                height={96}
                 className="w-24 h-24 rounded-full object-cover border-2 border-gray-300 dark:border-gray-600"
               />
             </div>

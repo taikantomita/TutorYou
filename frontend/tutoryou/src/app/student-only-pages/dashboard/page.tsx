@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
+import Image from 'next/image'
 
 interface Tutor {
   name: string
@@ -28,8 +29,6 @@ interface Profile {
 
 export default function StudentDashboard() {
   const router = useRouter()
-  const [selectedTutor, setSelectedTutor] = useState<Tutor | null>(null)
-  const [selectedTime, setSelectedTime] = useState<string>('')
   const [selectedSubject, setSelectedSubject] = useState<string>('')
 
   const [pendingAppointments, setPendingAppointments] = useState<Appointment[]>(
@@ -53,7 +52,6 @@ export default function StudentDashboard() {
       setPreview(storedProfile.profilePicture)
     }
 
-    // Fetch appointments from local storage
     const storedPendingAppointments = JSON.parse(
       localStorage.getItem('pendingAppointments') || '[]',
     )
@@ -93,8 +91,6 @@ export default function StudentDashboard() {
     date: string,
     time: string,
   ) => {
-    setSelectedTutor(tutor)
-    setSelectedTime(time)
     router.push(
       `/student-only-pages/confirm-appointment?tutor=${encodeURIComponent(JSON.stringify(tutor))}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`,
     )
@@ -219,9 +215,11 @@ export default function StudentDashboard() {
           <div className="flex flex-col space-y-4">
             {profile.profilePicture && (
               <div className="flex justify-center mb-4">
-                <img
+                <Image
                   src={profile.profilePicture}
                   alt="Profile"
+                  width={96}
+                  height={96}
                   className="w-24 h-24 rounded-full object-cover border-2 border-gray-300 dark:border-gray-600"
                 />
               </div>
@@ -271,9 +269,11 @@ export default function StudentDashboard() {
               </label>
               {preview && (
                 <div className="mb-4">
-                  <img
+                  <Image
                     src={preview}
                     alt="Profile Preview"
+                    width={96}
+                    height={96}
                     className="w-24 h-24 rounded-full object-cover border-2 border-gray-300 dark:border-gray-600"
                   />
                 </div>
