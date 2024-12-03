@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation'
 export default function SignupPage() {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [securityQuestion, setSecurityQuestion] = useState<string>('') // State for security question
+  const [securityAnswer, setSecurityAnswer] = useState<string>('') // State for security answer
   const [role, setRole] = useState<string>('Learner') // Default role
   const [error, setError] = useState<string | null>(null) // State for error messages
   const [success, setSuccess] = useState<boolean>(false) // State for signup success
@@ -16,29 +18,45 @@ export default function SignupPage() {
     e.preventDefault()
 
     // Check for blank fields
-    if (!username || !password || !role) {
-      setError('Username, password, and role are required.')
+    if (
+      !username ||
+      !password ||
+      !role ||
+      !securityQuestion ||
+      !securityAnswer
+    ) {
+      setError('All fields are required.')
       return
     }
 
     // Clear previous error messages
     setError(null)
 
-    const res = await fetch('http://localhost:8000/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password, role }),
-    })
+    try {
+      const res = await fetch('http://localhost:8000/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username,
+          password,
+          role,
+          security_question: securityQuestion,
+          security_answer: securityAnswer,
+        }),
+      })
 
-    if (res.ok) {
-      setSuccess(true) // Indicate success
-      setTimeout(() => {
-        router.push('/login') // Redirect to login after a brief delay
-      }, 2000) // Delay of 2 seconds for user to see the success message
-    } else if (res.status === 409) {
-      setError('Username is already taken. Please choose another.')
-    } else {
-      setError('An unexpected error occurred. Please try again.')
+      if (res.ok) {
+        setSuccess(true) // Indicate success
+        setTimeout(() => {
+          router.push('/login') // Redirect to login after a brief delay
+        }, 2000) // Delay of 2 seconds for user to see the success message
+      } else if (res.status === 409) {
+        alert('Username is already taken. Please choose another.')
+      } else {
+        alert('An unexpected error occurred. Please try again.')
+      }
+    } catch {
+      alert('Failed to connect to the server. Please try again later.')
     }
   }
 
@@ -96,6 +114,30 @@ export default function SignupPage() {
               <option value="Learner">Learner</option>
               <option value="Tutor">Tutor</option>
             </select>
+          </div>
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300">
+              Security Question
+            </label>
+            <input
+              type="text"
+              value={securityQuestion}
+              onChange={(e) => setSecurityQuestion(e.target.value)}
+              placeholder="Enter your security question"
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300">
+              Security Answer
+            </label>
+            <input
+              type="text"
+              value={securityAnswer}
+              onChange={(e) => setSecurityAnswer(e.target.value)}
+              placeholder="Enter your security answer"
+              className={inputClass}
+            />
           </div>
           <button
             type="submit"

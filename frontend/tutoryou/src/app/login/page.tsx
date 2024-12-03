@@ -95,6 +95,15 @@ export default function LoginPage() {
               Sign up
             </a>
           </p>
+          <p className="text-sm text-center text-gray-600 dark:text-gray-400 mt-4">
+            Forgot your password?{' '}
+            <a
+              href="/reset-password"
+              className="text-indigo-500 dark:text-indigo-400"
+            >
+              Reset Password
+            </a>
+          </p>
         </form>
       </div>
     </div>

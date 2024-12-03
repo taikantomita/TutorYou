@@ -5,14 +5,14 @@ from sqlalchemy.orm import sessionmaker, Session, declarative_base
 from fastapi.middleware.cors import CORSMiddleware
 import bcrypt
 
-
 app = FastAPI()
 
 DATABASE_URL = "sqlite:///./users.db"
 
 # Set up the database
-engine = create_engine(DATABASE_URL, connect_args={
-                       "check_same_thread": False})  # SQLite specific
+engine = create_engine(
+    DATABASE_URL, connect_args={
+        "check_same_thread": False})  # SQLite specific
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
@@ -46,7 +46,14 @@ class UserLogin(BaseModel):
     password: constr(min_length=1)  # Enforce non-empty password
 
 
+class ResetPassword(BaseModel):
+    username: constr(min_length=1)
+    security_answer: constr(min_length=1)
+    new_password: constr(min_length=1)
+
 # Dependency to get the database session
+
+
 def get_db():
     db = SessionLocal()
     try:
@@ -62,11 +69,11 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers
-    # allow_origins=["*"]
 )
 
-
 # Register route
+
+
 @app.post("/register", status_code=status.HTTP_201_CREATED)
 def register(user: UserCreate, db: Session = Depends(get_db)):
     # Check if the username already exists
@@ -86,9 +93,11 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 
     # Create the new user with a hashed password
     password_hash = bcrypt.hashpw(
-        user.password.encode('utf-8'), bcrypt.gensalt())
+        user.password.encode('utf-8'),
+        bcrypt.gensalt())
     answer_hash = bcrypt.hashpw(
-        user.security_answer.encode('utf-8'), bcrypt.gensalt())
+        user.security_answer.encode('utf-8'),
+        bcrypt.gensalt())
     db_user = User(
         username=user.username,
         password_hash=password_hash.decode('utf-8'),
@@ -102,10 +111,15 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     return {"message": "User created successfully"}
 
 
-class ResetPassword(BaseModel):
-    username: constr(min_length=1)
-    security_answer: constr(min_length=1)
-    new_password: constr(min_length=1)
+@app.get("/security-question", status_code=status.HTTP_200_OK)
+def get_security_question(username: str, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.username == username).first()
+    if not db_user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    return {"security_question": db_user.security_question}
 
 
 @app.post("/reset-password", status_code=status.HTTP_200_OK)
@@ -132,8 +146,9 @@ def reset_password(request: ResetPassword, db: Session = Depends(get_db)):
     db.commit()
     return {"message": "Password reset successfully"}
 
-
 # Login route
+
+
 @app.post("/login", status_code=status.HTTP_200_OK)
 def login(user: UserLogin, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.username == user.username).first()
