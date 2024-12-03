@@ -11,7 +11,6 @@ class Notification:
     C_SMTP = 'smtp.gmail.com'
     C_PORT = 587
     session_date = None
-    
     # Messages template for various different sessions
     message_data = {
         'create': {

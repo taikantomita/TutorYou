@@ -124,6 +124,7 @@ def get_security_question(username: str, db: Session = Depends(get_db)):
         )
     return {"security_question": db_user.security_question}
 
+
 # The route to reset the user's password using the security question
 @app.post("/reset-password", status_code=status.HTTP_200_OK)
 def reset_password(request: ResetPassword, db: Session = Depends(get_db)):
