@@ -4,6 +4,11 @@ import SignupPage from '@/app/signup/page'
 import '@testing-library/jest-dom'
 
 describe('SignupPage', () => {
+  beforeAll(() => {
+    // Mock the window.alert function
+    window.alert = jest.fn()
+  })
+
   it('renders correctly', () => {
     render(<SignupPage />)
 
@@ -33,9 +38,7 @@ describe('SignupPage', () => {
     fireEvent.click(signupButton)
 
     await waitFor(() => {
-      expect(
-        screen.getByText(/Username, password, and role are required./i),
-      ).toBeInTheDocument()
+      expect(screen.getByText(/all fields are required./i)).toBeInTheDocument()
     })
   })
 
@@ -50,6 +53,18 @@ describe('SignupPage', () => {
     fireEvent.change(screen.getByPlaceholderText(/enter your password/i), {
       target: { value: 'password123' },
     })
+    fireEvent.change(
+      screen.getByPlaceholderText(/enter your security question/i),
+      {
+        target: { value: "What is your pet's name?" },
+      },
+    )
+    fireEvent.change(
+      screen.getByPlaceholderText(/enter your security answer/i),
+      {
+        target: { value: 'Fluffy' },
+      },
+    )
 
     fireEvent.click(screen.getByRole('button', { name: /sign up/i }))
 
@@ -73,13 +88,25 @@ describe('SignupPage', () => {
     fireEvent.change(screen.getByPlaceholderText(/enter your password/i), {
       target: { value: 'password123' },
     })
+    fireEvent.change(
+      screen.getByPlaceholderText(/enter your security question/i),
+      {
+        target: { value: "What is your pet's name?" },
+      },
+    )
+    fireEvent.change(
+      screen.getByPlaceholderText(/enter your security answer/i),
+      {
+        target: { value: 'Fluffy' },
+      },
+    )
 
     fireEvent.click(screen.getByRole('button', { name: /sign up/i }))
 
     await waitFor(() => {
-      expect(
-        screen.getByText(/username is already taken. please choose another./i),
-      ).toBeInTheDocument()
+      expect(window.alert).toHaveBeenCalledWith(
+        'Username is already taken. Please choose another.',
+      )
     })
   })
 })
