@@ -4,6 +4,7 @@ from session import Session
 
 app = Flask(__name__)
 
+
 # Function processes and sends the notification
 def process_notification(session, action):
     session = Session.get_session(session)

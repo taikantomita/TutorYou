@@ -17,7 +17,8 @@ engine = create_engine(
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-# Defines the User Model 
+
+# Defines the User Model
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
@@ -110,6 +111,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_user)
     return {"message": "User created successfully"}
+
 
 # The route to get the user's security question
 @app.get("/security-question", status_code=status.HTTP_200_OK)

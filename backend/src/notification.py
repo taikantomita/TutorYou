@@ -2,6 +2,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+
 # Class handles the email comunication for the session updates
 class Notification:
     # Email configuration constants
@@ -9,7 +10,6 @@ class Notification:
     C_TUTORYOU_PASSWORD = 'jmdd gaib wrgk qtqw'
     C_SMTP = 'smtp.gmail.com'
     C_PORT = 587
-
     session_date = None
     
     # Messages template for various different sessions
