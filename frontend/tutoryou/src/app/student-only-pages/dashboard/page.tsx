@@ -155,10 +155,10 @@ export default function StudentDashboard() {
   const handleProfileChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
-    const { name, value, selectedOptions } = e.target
-    if (name === 'subjects') {
+    const { name, value } = e.target
+    if (name === 'subjects' && e.target instanceof HTMLSelectElement) {
       const selectedSubjects = Array.from(
-        selectedOptions,
+        e.target.selectedOptions,
         (option) => option.value,
       )
       setEditProfile((prev) =>
