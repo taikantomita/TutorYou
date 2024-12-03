@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 interface Tutor {
@@ -10,7 +10,7 @@ interface Tutor {
   availableDates: { date: string; times: string[] }[]
 }
 
-export default function ConfirmAppointment() {
+function ConfirmAppointmentContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -90,5 +90,13 @@ export default function ConfirmAppointment() {
         </button>
       </div>
     </div>
+  )
+}
+
+export default function ConfirmAppointment() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ConfirmAppointmentContent />
+    </Suspense>
   )
 }
