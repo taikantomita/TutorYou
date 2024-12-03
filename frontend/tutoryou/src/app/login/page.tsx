@@ -35,7 +35,7 @@ export default function LoginPage() {
       const session = await res.json()
 
       if (session?.user?.role === 'Tutor') {
-        router.push('/tutors/dashboard') // Redirect tutors to their dashboard
+        router.push('/tutor-only-pages/dashboard') // Redirect tutors to their dashboard
       } else if (session?.user?.role === 'Learner') {
         router.push('/student-only-pages/dashboard') // Redirect learners to their dashboard
       } else {
@@ -93,6 +93,15 @@ export default function LoginPage() {
             Don’t have an account?{' '}
             <a href="/signup" className="text-indigo-500 dark:text-indigo-400">
               Sign up
+            </a>
+          </p>
+          <p className="text-sm text-center text-gray-600 dark:text-gray-400 mt-4">
+            Forgot your password?{' '}
+            <a
+              href="/reset-password"
+              className="text-indigo-500 dark:text-indigo-400"
+            >
+              Reset Password
             </a>
           </p>
         </form>

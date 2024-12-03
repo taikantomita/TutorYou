@@ -76,7 +76,7 @@ describe('LoginPage', () => {
     // Wait for redirection logic
     await waitFor(() => {
       expect(pushMock).toHaveBeenCalledTimes(1)
-      expect(pushMock).toHaveBeenCalledWith('/tutors/dashboard')
+      expect(pushMock).toHaveBeenCalledWith('/tutor-only-pages/dashboard')
     })
   })
 

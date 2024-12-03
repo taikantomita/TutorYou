@@ -7,6 +7,7 @@ import Image from 'next/image'
 export default function CreateProfile() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [school, setSchool] = useState('')
   const [subjects, setSubjects] = useState<string[]>([])
   const [profilePicture, setProfilePicture] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
@@ -17,6 +18,7 @@ export default function CreateProfile() {
     const profile = {
       name,
       email,
+      school,
       subjects,
       profilePicture: profilePicture
         ? URL.createObjectURL(profilePicture)
@@ -24,7 +26,7 @@ export default function CreateProfile() {
     }
     localStorage.setItem('profile', JSON.stringify(profile))
     console.log('Profile Created:', profile)
-    router.push('/student-only-pages/dashboard')
+    router.push('/tutor-only-pages/dashboard')
   }
 
   const handleProfilePictureChange = (
@@ -33,7 +35,7 @@ export default function CreateProfile() {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0]
       setProfilePicture(file)
-      setPreview(URL.createObjectURL(file)) // Create preview URL
+      setPreview(URL.createObjectURL(file))
     }
   }
 
@@ -48,7 +50,7 @@ export default function CreateProfile() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 p-8">
       <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100 mb-8">
-        Create Your Profile
+        Create Your Tutor Profile
       </h1>
       <form
         onSubmit={handleSubmit}
@@ -101,10 +103,22 @@ export default function CreateProfile() {
               required
             />
           </div>
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300">
+              School
+            </label>
+            <input
+              type="text"
+              value={school}
+              onChange={(e) => setSchool(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
+              required
+            />
+          </div>
         </div>
         <div>
           <label className="block text-lg text-gray-700 dark:text-gray-300 mb-2">
-            Preferred Subjects
+            Subjects You Teach
           </label>
           <div className="grid grid-cols-2 gap-2">
             {[
