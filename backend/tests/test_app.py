@@ -60,7 +60,9 @@ def test_register_user():
         json={
             "username": "testuser",
             "password": "testpassword",
-            "role": "Tutor"})
+            "role": "Tutor",
+            "security_question": "What is your favorite color?",
+            "security_answer": "Blue"})
     assert response.status_code == 201
     assert response.json() == {"message": "User created successfully"}
 
@@ -72,35 +74,46 @@ def test_register_duplicate_user():
     client.post(
         "/register",
         json={
-            "username": "duplicateuser",
-            "password": "password1",
-            "role": "Tutor"})
+            "username": "testuser",
+            "password": "testpassword",
+            "role": "Tutor",
+            "security_question": "What is your pet's name?",
+            "security_answer": "Buddy"})
 
     # Attempt to register with the same username
     response = client.post(
         "/register",
         json={
-            "username": "duplicateuser",
-            "password": "password2",
-            "role": "Tutor"})
+            "username": "testuser",
+            "password": "testpassword",
+            "role": "Tutor",
+            "security_question": "What is your pet's name?",
+            "security_answer": "Buddy"})
     assert response.status_code == 409
     assert response.json() == {"detail": "Username already taken"}
 
 # 3. Test Registration with Blank Fields
 
 
-@pytest.mark.parametrize("username, password", [
-    ("", "password"),
-    ("username", ""),
-    ("", ""),
+@pytest.mark.parametrize("username, password, role, question, answer", [
+    ("", "password", "Tutor", "Question?", "Answer"),
+    ("username", "", "Tutor", "Question?", "Answer"),
+    ("username", "password", "", "Question?", "Answer"),
+    ("username", "password", "Tutor", "", "Answer"),
+    ("username", "password", "Tutor", "Question?", ""),
+    ("", "", "", "", "")
 ])
-def test_register_blank_fields(username, password):
+def test_register_blank_fields(username, password, role, question, answer):
     response = client.post(
         "/register",
         json={
             "username": username,
-            "password": password})
-    # FastAPI automatically handles validation errors for blank fields
+            "password": password,
+            "role": role,
+            "security_question": question,
+            "security_answer": answer
+        }
+    )
     assert response.status_code == 422
 
 
@@ -111,7 +124,9 @@ def test_login_user():
         json={
             "username": "loginuser",
             "password": "loginpassword",
-            "role": "Tutor"
+            "role": "Tutor",
+            "security_question": "What is your favorite food?",
+            "security_answer": "Pizza"
         }
     )
 
