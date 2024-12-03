@@ -2,6 +2,7 @@
 
 import React from 'react'
 
+// Functional component for the home page
 export default function HomePage() {
   return (
     <div

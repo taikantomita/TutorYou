@@ -1,9 +1,10 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { signOut } from 'next-auth/react'
-import Image from 'next/image'
+import { useRouter } from 'next/navigation' // Handles navigation
+import { signOut } from 'next-auth/react' // Handles sign out
+import Image from 'next/image' // Image handling
 
+// Handler for tutor user
 interface Tutor {
   name: string
   subject: string
@@ -12,6 +13,7 @@ interface Tutor {
   availableDates: { date: string; times: string[] }[]
 }
 
+// Handler for appointment
 interface Appointment {
   tutor?: Tutor
   studentName: string
@@ -21,6 +23,7 @@ interface Appointment {
   status: 'pending' | 'confirmed'
 }
 
+// Handler for profile
 interface Profile {
   name: string
   email: string
@@ -28,6 +31,7 @@ interface Profile {
   profilePicture: string | null
 }
 
+//
 export default function TutorDashboard() {
   const router = useRouter()
   const [selectedDate, setSelectedDate] = useState<string>('')

@@ -2,11 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CSS variables for the theme*/
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
+/* Theme colors for dark mode*/
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -14,6 +16,7 @@
   }
 }
 
+/* Applies the theme colors to the body */
 body {
   color: var(--foreground);
   background: var(--background);

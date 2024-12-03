@@ -7,6 +7,7 @@ import bcrypt
 
 app = FastAPI()
 
+# Database URL for Configuration
 DATABASE_URL = "sqlite:///./users.db"
 
 # Set up the database
@@ -17,6 +18,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
+# Defines the User Model
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
@@ -111,6 +113,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     return {"message": "User created successfully"}
 
 
+# The route to get the user's security question
 @app.get("/security-question", status_code=status.HTTP_200_OK)
 def get_security_question(username: str, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.username == username).first()
@@ -122,6 +125,7 @@ def get_security_question(username: str, db: Session = Depends(get_db)):
     return {"security_question": db_user.security_question}
 
 
+# The route to reset the user's password using the security question
 @app.post("/reset-password", status_code=status.HTTP_200_OK)
 def reset_password(request: ResetPassword, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.username == request.username).first()

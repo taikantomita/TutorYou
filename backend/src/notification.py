@@ -3,14 +3,15 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
+# Class handles the email comunication for the session updates
 class Notification:
+    # Email configuration constants
     C_TUTORYOU_EMAIL = 'tutoryou.notification@gmail.com'
     C_TUTORYOU_PASSWORD = 'jmdd gaib wrgk qtqw'
     C_SMTP = 'smtp.gmail.com'
     C_PORT = 587
-
     session_date = None
-
+    # Messages template for various different sessions
     message_data = {
         'create': {
             'subject': 'New Session Scheduled',
@@ -26,6 +27,7 @@ class Notification:
         }
     }
 
+    # Sends an email notificiation
     @classmethod
     def send_message(cls, session_emails, session_date, modification_type):
         msg = MIMEMultipart()
@@ -37,6 +39,7 @@ class Notification:
         msg.attach(MIMEText(body, 'plain'))
 
         try:
+            # Will establish SMTP connection
             with smtplib.SMTP(cls.C_SMTP, cls.C_PORT) as server:
                 server.ehlo()
                 server.starttls()

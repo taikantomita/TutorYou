@@ -2,6 +2,7 @@
 import React, { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
+// Handler for appoitment interface
 interface Appointment {
   studentName: string
   subject: string
@@ -10,15 +11,18 @@ interface Appointment {
   status: 'pending' | 'confirmed'
 }
 
+// Function component for reviewing the tutoring request
 function ReviewRequest() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const router = useRouter() // Router for navigation
+  const searchParams = useSearchParams() // Fetches the URL query parameters
 
+  // Stores the appointment details
   const [studentName, setStudentName] = useState<string>('')
   const [subject, setSubject] = useState<string>('')
   const [date, setDate] = useState<string>('')
   const [time, setTime] = useState<string>('')
 
+  // Loads the appointment details from the URL
   useEffect(() => {
     if (searchParams) {
       const studentNameParam = searchParams.get('studentName')
@@ -41,6 +45,7 @@ function ReviewRequest() {
     }
   }, [searchParams])
 
+  // Functional to handle/format the time to user-friendly format
   const formatTime = (time: string) => {
     const [hour, minute] = time.split(':')
     const hourInt = parseInt(hour, 10)
@@ -49,6 +54,7 @@ function ReviewRequest() {
     return `${formattedHour}:${minute} ${period}`
   }
 
+  // Handles the confirmation of the appoinment
   const handleConfirm = () => {
     const upcomingAppointments = JSON.parse(
       localStorage.getItem('upcomingAppointments') || '[]',
@@ -68,6 +74,7 @@ function ReviewRequest() {
       JSON.stringify(upcomingAppointments),
     )
 
+    // Functional for the pending appoinment
     const pendingAppointments = JSON.parse(
       localStorage.getItem('pendingAppointments') || '[]',
     ).filter(

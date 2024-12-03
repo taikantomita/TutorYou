@@ -1,13 +1,15 @@
 import React from 'react'
 
+// Defines the props
 interface InputFieldProps {
-  label: string
-  type: string
-  value: string
+  label: string // Text label for input field
+  type: string // Type of input
+  value: string // Current value for the input field
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
 }
 
+// Functional component for the input field
 const InputField: React.FC<InputFieldProps> = ({
   label,
   type,
